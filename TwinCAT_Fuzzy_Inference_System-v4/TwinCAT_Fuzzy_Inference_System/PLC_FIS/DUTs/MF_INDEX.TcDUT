@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
-  <DUT Name="MF_INDEX" Id="{5ff9f34b-b6d4-4e3b-9be8-3f33c2e220f7}">
-    <Declaration><![CDATA[TYPE
-	MF_INDEX : INT;
-END_TYPE]]></Declaration>
-  </DUT>
-</TcPlcObject>
