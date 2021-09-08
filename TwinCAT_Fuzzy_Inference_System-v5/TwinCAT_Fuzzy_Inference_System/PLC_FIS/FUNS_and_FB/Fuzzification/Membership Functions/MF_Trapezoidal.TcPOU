@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="MF_Trapezoidal" Id="{81e2f38e-859e-49c3-b7df-4ee27d7f46b8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MF_Trapezoidal : real
+VAR_INPUT
+	x,a,b,c,d:REAL;
+END_VAR
+VAR_OUTPUT
+	Error:BOOL;
+END_VAR
+ ]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//a < b < c < d
+IF NOT(b=a OR d=c) AND
+(a<b) AND (b<c) AND (c<d) THEN
+	IF x<a THEN
+		MF_Trapezoidal:=0;
+	ELSIF a<=x AND x<=b THEN
+		MF_Trapezoidal:=(x-a)/(b-a);
+	ELSIF b<=x AND x<=c THEN
+		MF_Trapezoidal:=1;
+	ELSIF d<=x AND x<=c THEN
+		MF_Trapezoidal:=(d-x)/(d-c);
+	END_IF
+ELSE
+	Error:=TRUE;		
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="MF_Trapezoidal">
+      <LineId Id="30" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="43" Count="7" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

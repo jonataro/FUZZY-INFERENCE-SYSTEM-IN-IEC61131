@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FB_AGGREGATION" Id="{82675cbe-95f4-4a61-93e4-f185b93b6fec}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AGGREGATION
+VAR_INPUT
+	//fbImplication: REFERENCE TO FB_IMPLICATION;
+	Myrules:ARRAY [1..NumOfFisRules] OF FIS_RULES;
+	MyFISoutputs:ARRAY [1..NumOfFISOutputs] OF FIS_VAR;
+	X:REAL;
+END_VAR
+
+VAR
+	firstRule,LastRule,i,j:DINT;
+	aofFuzzySet:  ARRAY [1..NumOfFisRules] OF REAL;
+	fbImplication:FB_IMPLICATION;
+	MyMF: INT;
+END_VAR
+VAR_OUTPUT
+	FSValue:REAL; 
+END_VAR
+
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//firstRule:=LOWER_BOUND(Rule,1);
+//LastRule:=UPPER_BOUND(Rule,1);
+//FOR i:=firstRule TO LastRule DO
+FOR i:=1 TO NumOfFisRules DO
+	FOR j:=1 TO NumOfFISOutputs DO
+		IF Myrules[i].Consequents[j]>0 THEN
+		MyMF:=Myrules[i].Consequents[j];
+		fbImplication(
+				X:=X,
+				Antecedent:=Myrules[i].Antecedent,
+				FISOutputMf:= MyFISoutputs[j].MF[MyMF]);
+		aofFuzzySet[i]:=fbImplication.RuleFuzzySet;
+		END_IF
+	END_FOR
+END_FOR
+
+FSValue:=FuzzyOR_array(maximum,aofFuzzySet);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AGGREGATION">
+      <LineId Id="63" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="39" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

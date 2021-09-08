@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FB_IMPLICATION" Id="{00c0c73f-264e-4bea-a4a3-7a9174640c0c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_IMPLICATION
+VAR_INPUT
+	Antecedent: REAL;
+	X:REAL;
+	FISOutputMf: MEMBERSHIP_FUNCTION;
+END_VAR
+VAR_OUTPUT
+	RuleFuzzySet:REAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[RuleFuzzySet :=fuzzyAND(Minimum,fMembershipDegree(x,FISOutputMf),Antecedent);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_IMPLICATION">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FuzzyAND_array" Id="{92ae351f-4efd-46a7-ab77-a5896c48c2b5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FuzzyAND_array : real
+VAR_INPUT
+	ANDmethod:eAndMethod;
+END_VAR
+VAR_IN_OUT
+	Inputs:ARRAY[*]OF REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE ANDmethod OF
+	eAndMethod.Minimum://***********
+		FuzzyAND_array := TN_min(Inputs);
+	eAndMethod.Product://***********
+		FuzzyAND_array := TN_prod(Inputs);
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FuzzyAND_array">
+      <LineId Id="29" Count="4" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="fCentroid" Id="{afe5fe6c-8c63-4c03-923d-2cdf7d994a02}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION fCentroid : REAL
+VAR_INPUT
+	resolution:DINT;//number of integration rectangles
+	Range:ARRAY[1..2] OF REAL;
+	fbAggregation: REFERENCE TO FB_AGGREGATION;//MF:MEMBERSHIP_FUNCTION;
+END_VAR
+VAR
+	i:DINT;
+	Xi,MDi:REAL;
+	IntegrationStep: REAL;
+	Dividend:REAL:=0;//sum(MD(Xi))
+ 	Divisor:REAL:=0;//sum(Xi*MD(Xi))
+END_VAR
+VAR_OUTPUT
+	error:BOOL:=FALSE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*
+centroid=   sum(Xi*MD(Xi))  dividend
+		   ===============
+		     sum(MD(Xi)) divisor
+*)
+IF Resolution<>0 THEN
+	IntegrationStep :=(Range[2]-Range[1])/DINT_TO_REAL(Resolution);
+	FOR i := 1 TO resolution DO
+		Xi := DINT_TO_REAL(i)*IntegrationStep;
+		fbAggregation(X:=Xi);
+		MDi := fbAggregation.FSValue;
+		Dividend := Dividend +Xi* MDi*IntegrationStep;
+		Divisor := Divisor + MDi*IntegrationStep;
+	END_FOR
+	IF Divisor<>0 THEN
+		fCentroid := Dividend/Divisor;
+	ELSE
+		fCentroid:=0;
+	END_IF
+ELSE error:=TRUE;	
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="fCentroid">
+      <LineId Id="75" Count="4" />
+      <LineId Id="113" Count="1" />
+      <LineId Id="82" Count="2" />
+      <LineId Id="116" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="117" Count="0" />
+      <LineId Id="87" Count="7" />
+      <LineId Id="32" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

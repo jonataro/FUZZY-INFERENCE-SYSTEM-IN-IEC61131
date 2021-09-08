@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <DUT Name="FIS_VAR_1" Id="{96d98035-2dbc-439e-9b88-ed68f22bd831}">
+    <Declaration><![CDATA[TYPE FIS_VAR_1 :
+STRUCT
+	Signal:  REAL;
+	//MyVarInfo :__SYSTEM.VAR_INFO:=__VARINFO(Signal);
+	//Name:STRING:=MyVarInfo.Symbol;
+	Range:ARRAY[0..1] OF REAL;
+	NumberOfMF:INT;
+	MF:ARRAY [1..9]OF MEMBERSHIP_FUNCTION;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

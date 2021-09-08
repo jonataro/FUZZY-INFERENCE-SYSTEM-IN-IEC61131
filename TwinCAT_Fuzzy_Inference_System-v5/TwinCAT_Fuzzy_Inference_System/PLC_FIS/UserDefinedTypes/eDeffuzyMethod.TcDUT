@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <DUT Name="eDeffuzyMethod" Id="{8d399c7b-8798-4530-9587-52750ef778d9}">
+    <Declaration><![CDATA[//{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE eDeffuzyMethod :
+(
+	Centroid
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
