@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="fLinInterpol" Id="{5ea7fabf-9bde-409d-a780-f61b770ee3e9}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION fLinInterpol : real
+VAR_INPUT
+	InputValue,Xmin,Xmax,Ymin,Ymax:REAL;
+END_VAR
+VAR
+	b,a:REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//y=a+bx
+b:= YMin+InputValue*((Xmax-Xmin)/(Ymax-Ymin));
+a:= Ymin-b*xmin;
+fLinInterpol:=a+b*InputValue; ]]></ST>
+    </Implementation>
+    <LineIds Name="fLinInterpol">
+      <LineId Id="27" Count="2" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

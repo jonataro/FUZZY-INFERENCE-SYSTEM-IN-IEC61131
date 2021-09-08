@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="FIS_pgr" Id="{9da28718-a0af-41d8-979d-59ec0e220be8}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM FIS_pgr
+VAR
+	CrispInputsSimulation: ARRAY[1..NumOfFISInputs] OF REAL;
+	Inputs: ARRAY[1..NumOfFISInputs] OF FIS_VAR;
+	MD:ARRAY[1..NumOfFISInputs,1..MFmax]OF REAL;//MD
+	Outputs: ARRAY[1..NumOfFISOutputs] OF FIS_VAR;
+	Rules:ARRAY [1..NumOfFisRules] OF FIS_RULES;
+	i,j: DINT;	
+	fbAggregation:FB_AGGREGATION;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//FUZZY INFERENCE SYSTEM 
+//======================================================
+
+//INPUTS DEFINITION
+	//input1=ERROR(command-feedback)
+		Inputs[1].CrispValue:=	CrispInputsSimulation[1];
+		Inputs[1].Name  :=  	'TempError';
+		Inputs[1].Range[1] :=  	0;
+		Inputs[1].Range[2] := 	70;
+		Inputs[1].NumberOfMF := 3;
+		
+		Inputs[1].MF[1].Name := 	'none';
+		Inputs[1].MF[1].Shape := 	MF_SHAPE.Rshaped;
+		Inputs[1].MF[1].Points[1] := 0;
+		Inputs[1].MF[1].Points[2] := 10;
+		
+		Inputs[1].MF[2].Name := 	'litle';
+		Inputs[1].MF[2].Shape := 	MF_SHAPE.Triangular;
+		Inputs[1].MF[2].Points[1] := 5;
+		Inputs[1].MF[2].Points[2] := 20;
+		Inputs[1].MF[2].Points[3] := 40;
+		
+		Inputs[1].MF[3].Name := 	'big';                                                                                 
+		Inputs[1].MF[3].Shape := 	MF_SHAPE.Lshaped;
+		Inputs[1].MF[3].Points[1] := 20;
+		Inputs[1].MF[3].Points[2] := 60;	
+										 
+	//input2=differror
+		Inputs[2].CrispValue:=	CrispInputsSimulation[2];
+		Inputs[2].Name := 		'speed';
+		Inputs[2].Range[1] :=  	0;
+		Inputs[2].Range[2] := 	20;
+		Inputs[2].NumberOfMF := 3;
+		
+		Inputs[2].MF[1].Name := 	'null';
+		Inputs[2].MF[1].Shape := 	MF_SHAPE.Rshaped;
+		Inputs[2].MF[1].Points[1] := 0;
+		Inputs[2].MF[1].Points[2] := 2;
+		
+		Inputs[2].MF[2].Name := 	'litlle';
+		Inputs[2].MF[2].Shape := 	MF_SHAPE.Triangular;
+		Inputs[2].MF[2].Points[1] := 0;
+		Inputs[2].MF[2].Points[2] := 5;
+		Inputs[2].MF[2].Points[3] := 10;
+		
+		Inputs[2].MF[3].Name := 	'Big';
+		Inputs[2].MF[3].Shape := 	MF_SHAPE.Lshaped;
+		Inputs[2].MF[3].Points[1] := 8;
+		Inputs[2].MF[3].Points[2] := 15;
+//======================================================
+
+//FUZZY OUTPUTS DEFINITION 
+	Outputs[1].Name  :=  		'Power';
+	Outputs[1].Range[1] :=  	0;
+	Outputs[1].Range[2] :=		120;
+	Outputs[1].NumberOfMF := 	3;
+	
+	Outputs[1].MF[1].Name := 	'Low';
+	Outputs[1].MF[1].Shape := 	MF_SHAPE.Rshaped;
+	Outputs[1].MF[1].Points[1] := 0;
+	Outputs[1].MF[1].Points[2] := 30 ;
+
+	
+	Outputs[1].MF[2].Name := 	'Medium';
+	Outputs[1].MF[2].Shape := 	MF_SHAPE.Triangular;
+	Outputs[1].MF[2].Points[1] := 20;
+	Outputs[1].MF[2].Points[2] := 40;
+	Outputs[1].MF[2].Points[3] := 60;
+	
+	Outputs[1].MF[3].Name := 	'High';
+	Outputs[1].MF[3].Shape := 	MF_SHAPE.Lshaped;
+	Outputs[1].MF[3].Points[1] := 50;
+	Outputs[1].MF[3].Points[2] := 100;
+//======================================================
+
+//Fuzzufication inteface				
+	//Membership degrees calculation 
+	//---is interesting calculate directlu con antecedents calculation?
+	FOR i:=1 TO NumOfFISInputs DO
+		FOR j:=1 TO inputs[i].NumberOfMF DO
+			MD[i,j]:= 
+				fMembershipDegree(
+					CrispInput := Inputs[i].CrispValue,
+					MF:= Inputs[i].MF[j]);
+		END_FOR	 
+	END_FOR
+//======================================================
+
+//FUZZY_rules
+	//Rules[1].Antecedent := fuzzyAND(Minimum,MD[error,none],MD[speed,None]);
+	Rules[1].Antecedent := MD[error,none];
+	Rules[1].Consequents[power] := low;
+	
+	//Rules[2].Antecedent:= FuzzyAND(Minimum,MD[error,little],MD[speed,little]);
+	Rules[2].Antecedent:=MD[error,little];
+	Rules[2].Consequents[power] := medium;
+	
+	//Rules[3].Antecedent:= fuzzyAND(Minimum,MD[error,big],MD[speed,big]);
+	Rules[3].Antecedent:= MD[error,big];
+	Rules[3].Consequents[power] := High;
+//======================================================
+
+	
+//Aggregation
+fbAggregation.Myrules:=Rules;
+fbAggregation.MyFISoutputs:=Outputs;
+//Deffuzification
+Outputs[1].CrispValue:=fCentroid(100,Outputs[1].Range,fbAggregation);
+]]></ST>
+    </Implementation>
+    <LineIds Name="FIS_pgr">
+      <LineId Id="108" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="436" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="82" Count="1" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="44" Count="14" />
+      <LineId Id="402" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="79" Count="1" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="61" Count="15" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="435" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="211" Count="2" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="397" Count="0" />
+      <LineId Id="223" Count="3" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="228" Count="3" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="218" Count="3" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="434" Count="0" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="250" Count="0" />
+      <LineId Id="123" Count="4" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="403" Count="0" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="370" Count="0" />
+      <LineId Id="373" Count="0" />
+      <LineId Id="405" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="377" Count="0" />
+      <LineId Id="404" Count="0" />
+      <LineId Id="374" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="382" Count="0" />
+      <LineId Id="440" Count="0" />
+      <LineId Id="437" Count="1" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="408" Count="0" />
+      <LineId Id="439" Count="0" />
+      <LineId Id="313" Count="0" />
+      <LineId Id="350" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

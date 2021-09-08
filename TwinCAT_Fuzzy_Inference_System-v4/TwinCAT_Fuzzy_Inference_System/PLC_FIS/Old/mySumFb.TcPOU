@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="mySumFb" Id="{d6ea5f8e-d44f-4e52-a80f-9d3a013f6690}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK mySumFb
+VAR_INPUT
+	sum1,sum2:REAL;
+END_VAR
+VAR_OUTPUT
+	result:real;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[result := sum1+sum2;]]></ST>
+    </Implementation>
+    <LineIds Name="mySumFb">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

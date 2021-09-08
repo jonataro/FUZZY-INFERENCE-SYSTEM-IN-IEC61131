@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="fuzzyset" Id="{28f81305-47ac-4758-bc5e-b480dacd00f8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION fuzzyset : ARRAY [1..100]OF REAL;
+VAR_INPUT
+	antecedent:REAL;
+END_VAR
+VAR_IN_OUT
+	outputs: ARRAY[*] OF FIS_VAR;
+END_VAR
+
+VAR
+	i,j,Array1st,ArrayLast,NumOfInputs: DINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Array1st:= LOWER_BOUND(Inputs,1);
+ArrayLast:= UPPER_BOUND(Inputs,1);
+//calcular la impicaxionFOR i:=Array1st TO ArrayLast DO
+//CASE MF.Shape OF
+//	mf_shape.Singleton://
+//;//transparente
+//	mf_shape.Triangular://
+//;//	sale un trpaecio
+//END_CASE
+//
+FOR i:=1 TO i=100 DO
+fuzzyAND(minimum,antecedent,fMembershipDegree())
+
+//IF haciendo el MAX de las funciones de mf implicadas	
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="fuzzyset">
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="41" Count="2" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

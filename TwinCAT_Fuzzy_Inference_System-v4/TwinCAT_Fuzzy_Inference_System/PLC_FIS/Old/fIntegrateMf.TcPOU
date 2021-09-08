@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="fIntegrateMf" Id="{f9f2e9fb-f228-4e15-9018-b14a305f8eb0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION fIntegrateMf : real
+VAR_INPUT
+	resolution:DINT;//number of integration rectangles
+	Range:ARRAY[1..2] OF REAL;
+	refFbFuzzySet: REFERENCE TO FB_FUZZY_SET;//MF:MEMBERSHIP_FUNCTION;
+END_VAR
+VAR
+	i:DINT;
+	Xi,MDi:REAL;
+	IntegrationStep: REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Resolution<>0 THEN
+IntegrationStep:=(Range[2]-Range[1])/DINT_TO_REAL(Resolution);
+	FOR i := 1 TO resolution DO
+		xi:=DINT_TO_REAL(i);//Xi := DINT_TO_REAL(i)*IntegrationStep;
+		refFbFuzzySet(X:=Xi);
+		MDi := refFbFuzzySet.FSValue;
+		fIntegrateMf := fIntegrateMf +MDi;// MDi*IntegrationStep;
+	END_FOR
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="fIntegrateMf">
+      <LineId Id="40" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="38" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

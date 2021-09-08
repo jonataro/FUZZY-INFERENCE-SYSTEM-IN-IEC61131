@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="MF_R" Id="{3b116fa9-b828-4d7c-b780-c9a1b1fd5e7b}" SpecialFunc="None">
+    <Declaration><![CDATA[ FUNCTION MF_R : real
+VAR_INPUT
+	x,d,c:REAL;(*a defines the foot of the membership function, AND b defines its shoulder.*)
+
+END_VAR
+VAR_OUTPUT
+	Error:BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT(c=d) AND (c<d) THEN
+	IF x>d THEN
+		MF_R:=0;
+	ELSIF c<=x AND x<=d THEN
+		MF_R:=(d-x)/(d-c);
+	ELSIF  x<c THEN
+		MF_R:=1;
+	END_IF
+ELSE
+	Error:=TRUE;		
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MF_R">
+      <LineId Id="45" Count="0" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="55" Count="2" />
+      <LineId Id="34" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

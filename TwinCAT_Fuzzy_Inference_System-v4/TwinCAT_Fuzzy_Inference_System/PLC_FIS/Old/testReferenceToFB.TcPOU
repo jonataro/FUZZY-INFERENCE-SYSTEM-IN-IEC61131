@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="testReferenceToFB" Id="{eaa6da5b-ba98-4b45-b796-0484949e48c4}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION testReferenceToFB :ARRAY [1..2]OF  REAL
+VAR_INPUT
+	RefSum: REFERENCE TO mySumFb;
+	PointerSum: POINTER TO mySumFb;
+	sum2:REAL;
+END_VAR
+VAR
+		MyFb_p_Sum:mySumFb;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[MyFb_p_Sum := PointerSum^;
+
+RefSum.sum2:=sum2;
+testReferenceToFB[1]:=MyFb_p_Sum.result;
+testReferenceToFB[2]:=RefSum.result;
+]]></ST>
+    </Implementation>
+    <LineIds Name="testReferenceToFB">
+      <LineId Id="7" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

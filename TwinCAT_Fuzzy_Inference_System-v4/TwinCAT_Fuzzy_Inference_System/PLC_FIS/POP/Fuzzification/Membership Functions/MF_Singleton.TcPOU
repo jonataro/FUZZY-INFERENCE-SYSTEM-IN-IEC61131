@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="MF_Singleton" Id="{46a49336-bd84-4f42-9f86-16245c3b9aaa}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION MF_Singleton : real
+VAR_INPUT
+	x,a:REAL;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF x=a then
+	MF_Singleton:=1;
+ELSE
+	MF_Singleton:=0;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MF_Singleton">
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="3" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

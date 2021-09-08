@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <GVL Name="gvlFIS_Constants" Id="{db094891-9855-494e-b93c-81f0b1ec2681}">
+    <Declaration><![CDATA[{attribute 'global'}
+VAR_GLOBAL CONSTANT
+	NumOfFISInputs:INT :=	2;
+	NumOfFISOutputs:INT := 	1;
+	MFmax:INT := 			3;//maximum of MF per variable
+	NumOfFisRules:INT := 	3;
+	
+	//inputs
+	 	Error:INT:=1;
+	 	Speed:INT:=2;
+		
+	//outputs
+	 	power:INT:=1;
+		
+	//INPUT MEMBERSHIP FUNCTIONS
+		None:INT := 	 1;
+		Little:INT := 	 2;	
+		Big:INT := 	 3;		
+		//Negative:INT := 1;
+		//Null:INT :=	 2;
+		//Positive:INT := 3;
+		
+	//OUTPUT MEMBERSHIP FUNCTIONS
+		Low:INT := 1;
+		Medium:INT :=	 2;
+		High:INT := 3;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

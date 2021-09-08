@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.6">
+  <POU Name="OOP_MAIN" Id="{290bccff-ad29-4b05-ad7e-0058b322cbac}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM OOP_MAIN
+VAR
+	FuzzyLogicController:FB_FIS_oop;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="OOP_MAIN">
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
